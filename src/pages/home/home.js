@@ -1,14 +1,13 @@
-import Image from 'next/image';
+import Link from 'next/link';
+import css from './home.module.scss';
 
 function HomePage() {
 	return (
 		<div>
-			<Image
-				src="https://emoji.gg/assets/emoji/5762_9853_Rainbow_Weeb.gif"
-				width={128}
-				height={128}
-				layout="fixed"
-			/>
+			<p>Lorem ipsum sit dolor.</p>
+			<Link href="/sessions">
+				<button className={css.getStarted}>Get Started</button>
+			</Link>
 		</div>
 	);
 }

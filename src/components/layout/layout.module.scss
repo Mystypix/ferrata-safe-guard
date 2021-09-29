@@ -1,0 +1,25 @@
+.inner {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.header {
+	height: 50px;
+	box-shadow: 0 0 2px rgb(201, 226, 235);
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	background: rgb(201, 226, 235);
+	font-size: 24px;
+	line-height: 50px;
+	font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.header .inner {
+	text-align: center;
+}
+
+.main {
+	margin-top: 50px;
+}
