@@ -8,3 +8,30 @@
 	border: 2px solid #2e2e2e;
 	border-radius: 4px;
 }
+
+.addSession {
+	width: 50px;
+	height: 50px;
+	display: block;
+	margin: 10px auto;
+	border-radius: 50px;
+	background-color: rgb(201, 226, 235);
+	font-size: 32px;
+	border: 0;
+	text-align: center;
+	line-height: 50px;
+	cursor: pointer;
+}
+
+.addSession:hover {
+	box-shadow: 0 0 2px #050505;
+	font-size: 40px;
+}
+
+.createSessionSubmit {
+	background: lightblue;
+}
+
+.createSessionCancel {
+	background: lightgrey;
+}
