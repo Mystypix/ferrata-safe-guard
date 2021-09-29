@@ -1,0 +1,21 @@
+
+.loginForm {
+	margin-top: 30px;
+}
+.formGroup label {
+	color: rgb(95, 85, 85);
+}
+.actionButton {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+}
+.loggingIn {
+	text-align: center;
+	margin-top: 50px;
+	font-size: 18px;
+}
+.logginError {
+	margin: 15px 0;
+	color: red;
+}

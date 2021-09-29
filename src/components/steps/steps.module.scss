@@ -1,0 +1,25 @@
+.steps {
+	display: flex;
+	flex-flow: row nowrap;
+	padding: 5px;
+}
+.step {
+	width: 24px;
+	height: 24px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+.step .inner {
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background: grey;
+}
+.active .inner {
+	background: green;
+}
+.step:not(.active):hover .inner {
+	background: rgb(0, 175, 0);
+}

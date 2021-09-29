@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {useState, useEffect, useRef} from 'react';
-import sessionsApi from 'api/sessions';
+import climbingSessionsApi from 'api/climbing-sessions';
 import css from './session-detail.module.scss';
 import {Duration} from 'luxon';
 
@@ -14,7 +14,7 @@ function SessionDetailPage(props) {
 	const [inProgress, setInProgress] = useState(false);
 	const [time, setTime] = useState(0);
 	useEffect(async () => {
-		const session = await sessionsApi.getSession(props.sessionId);
+		const session = await climbingSessionsApi.getSession(props.sessionId);
 		setSession(session);
 		setLoading(false);
 	}, [props.sessionId]);

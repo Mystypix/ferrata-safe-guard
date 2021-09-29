@@ -1,7 +1,6 @@
-.getStarted {
-	display: block;
-	padding: 5px 10px;
-	font-size: 20px;
-	background: lightblue;
-	margin: 100px auto;
+.actions {
+	margin-top: 50px;
+	display: flex;
+	align-items: center;
+	flex-flow: column nowrap;
 }

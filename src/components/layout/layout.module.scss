@@ -11,15 +11,34 @@
 	left: 0;
 	right: 0;
 	background: rgb(201, 226, 235);
-	font-size: 24px;
-	line-height: 50px;
 	font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 	z-index: 2;
 }
 
 .header .inner {
-	text-align: center;
+	display: flex;
+	height: 100%;
+	align-items: center;
 }
+
+.headerName {
+	flex: 1 1 auto;
+	font-size: 24px;
+	text-decoration: none;
+	color: black;
+}
+
+.headerUser {
+	display: block;
+	flex: 0 0 40px;
+	height: 40px;
+	width: 40px;
+	border-radius: 20px;
+	background: beige;
+	text-align: center;
+	line-height: 40px;
+}
+
 
 .main {
 	padding-top: 50px;

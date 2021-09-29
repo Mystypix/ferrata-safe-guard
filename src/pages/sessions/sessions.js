@@ -1,6 +1,7 @@
 import Link from 'next/link';
+import Router from 'next/router';
 import {useState, useEffect, useRef} from 'react';
-import sessionsApi from 'api/sessions';
+import climbingSessionsApi from 'api/climbing-sessions';
 import css from './sessions.module.scss';
 
 function SessionCard({session, setSessions}) {
@@ -9,7 +10,7 @@ function SessionCard({session, setSessions}) {
 
 	const handleRemove = async () => {
 		setRemoving(true);
-		const sessions = await sessionsApi.removeSession(session.id);
+		const sessions = await climbingSessionsApi.removeSession(session.id);
 		setSessions(sessions);
 		// setRemoving(false);
 	};
@@ -58,7 +59,7 @@ function CreateSession({setSessions}) {
 		const form = formRef.current;
 		if (!form) return;
 		setLoading(true);
-		const sessions = await sessionsApi.createSession({
+		const sessions = await climbingSessionsApi.createSession({
 			id: Math.random().toString(),
 			name: form.name.value,
 			location: form.location.value,
@@ -128,8 +129,12 @@ function CreateSession({setSessions}) {
 function SessionsPage() {
 	const [sessions, setSessions] = useState(null);
 	useEffect(async () => {
-		const sessions = await sessionsApi.getSessions();
-		setSessions(sessions);
+		try {
+			const sessions = await climbingSessionsApi.getSessions();
+			setSessions(sessions);
+		} catch (err) {
+			Router.push('/home');
+		}
 	}, []);
 	const cards = sessions
 		? sessions.map(session => (

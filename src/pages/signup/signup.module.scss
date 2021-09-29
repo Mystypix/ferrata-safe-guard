@@ -1,0 +1,32 @@
+.formStep {
+	min-height: 160px;
+	display: none;
+}
+.formStep.active {
+	display: block;
+}
+.signupForm {
+	margin-top: 30px;
+}
+.formGroup + .formGroup {
+	margin-top: 20px;
+}
+.formGroup label {
+	color: rgb(95, 85, 85);
+}
+.actionButton {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+}
+.steps {
+	position: fixed;
+	bottom: 60px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+.creatingAccount {
+	text-align: center;
+	margin-top: 50px;
+	font-size: 18px;
+}
