@@ -3,6 +3,7 @@ import {useState, useEffect, useRef} from 'react';
 import climbingSessionsApi from 'api/climbing-sessions';
 import css from './session-detail.module.scss';
 import {Duration} from 'luxon';
+import {startTracking} from '../utils';
 
 const formatDuration = duration => {
 	return Duration.fromMillis(duration * 1000).toFormat('hh:mm:ss');
@@ -24,6 +25,7 @@ function SessionDetailPage(props) {
 		const interval = setInterval(() => {
 			setTime(time => time + 1);
 		}, 1000);
+		startTracking(props.sessionId);
 		return () => clearInterval(interval);
 	}, [inProgress, setTime]);
 
