@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {useState, useEffect, useRef} from 'react';
 import climbingSessionsApi from 'api/climbing-sessions';
+import sesssionService from 'services/session';
 import css from './session-detail.module.scss';
 import {Duration} from 'luxon';
 import {getGeolocation, startTracking} from '../../../utils/utils';
@@ -22,22 +23,15 @@ function SessionDetailPage(props) {
 	const [geolocation, setGeolocation] = useState(null);
 	const [inProgress, setInProgress] = useState(false);
 	const [time, setTime] = useState(0);
-	const [data, setData] = useState(
-		new Array(200).fill({
-			timestamp: Date.now(),
-			x: 0,
-			y: 0,
-			z: 0,
-		})
-	);
+	const [data, setData] = useState([]);
 
 	const addData = item => {
-		setData(data => [...data, item].slice(-10000));
+		setData(data => [...data, item].slice(-100));
 	};
 
 	useEffect(async () => {
 		const session = await climbingSessionsApi.getSession(props.sessionId);
-		const user = await climbingSessionsApi.getSession('session');
+		const user = await sesssionService.getUser();
 		setSession(session);
 		setUser(user);
 		setLoading(false);
@@ -74,26 +68,22 @@ function SessionDetailPage(props) {
 		? displayData[0].timestamp
 		: Date.now();
 
-	const sendEmail = () => {
-		e.preventDefault();
+	const sendEmail = () => { // TODO - use somewhere
 		const emailData = {
 			username: user.username,
 			projectname: session.name,
 			location: session.location,
 			geolocation: geolocation,
-		};
+		}
 
-		emailjs
-			.send(`gmail`, process.env.TEMPLATE_ID, emailData, process.env.USER_ID)
-			.then(
-				result => {
-					alert('Message Sent, We will get back to you shortly', result.text);
-				},
-				error => {
-					alert('An error occurred, Please try again', error.text);
-				}
-			);
-	};
+		emailjs.send(process.env.SERVICE_ID, process.env.TEMPLATE_ID, emailData, process.env.USER_ID)
+			.then((result) => {
+				alert("Message Sent, We will get back to you shortly", result.text);
+			},
+			(error) => {
+				alert("An error occurred, Please try again", error.text);
+			});
+	}
 
 	return (
 		<div>
@@ -115,26 +105,27 @@ function SessionDetailPage(props) {
 						{/* <button ref={callHelpButton}>Call the help</button> */}
 					</div>
 				)}
-				<div onClick={e => sendEmail(e)}>Send email</div>
 			</div>
 			<div className={css.chart}>
-				<strong>Distance</strong>
+				{displayData.length}
 				<VictoryChart
 					width={600}
 					height={400}
 					domainPadding={20}
 					theme={VictoryTheme.material}
 				>
-					{false && (
-						<VictoryAxis
-							// tickValues specifies both the number of ticks and where
-							// they are placed on the axis
-							// tickValues={[1, 2, 3, 4]}
-							// tickFormat={['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4']}
-							tickFormat={x => `${formatTimestamp(x - firstTimestamp)}s`}
-						/>
-					)}
-					<VictoryAxis dependentAxis domain={[100]} />
+					<VictoryAxis
+						// tickValues specifies both the number of ticks and where
+						// they are placed on the axis
+						// tickValues={[1, 2, 3, 4]}
+						// tickFormat={['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4']}
+						tickFormat={x => `${formatTimestamp(x - firstTimestamp)}s`}
+					/>
+					<VictoryAxis
+						dependentAxis
+						// tickFormat specifies how ticks should be displayed
+						// tickFormat={x => `$${x - firstTimestamp}`}
+					/>
 					<VictoryBar
 						data={displayData}
 						// data accessor for x values
@@ -142,42 +133,6 @@ function SessionDetailPage(props) {
 						// data accessor for y values
 						y="distance"
 					/>
-				</VictoryChart>
-			</div>
-			<div className={css.chart}>
-				<strong>X</strong>
-				<VictoryChart
-					width={600}
-					height={400}
-					domainPadding={20}
-					theme={VictoryTheme.material}
-				>
-					<VictoryAxis dependentAxis domain={[50]} />
-					<VictoryBar data={data} x="timestamp" y="x" />
-				</VictoryChart>
-			</div>
-			<div className={css.chart}>
-				<strong>Y</strong>
-				<VictoryChart
-					width={600}
-					height={400}
-					domainPadding={20}
-					theme={VictoryTheme.material}
-				>
-					<VictoryAxis dependentAxis domain={[50]} />
-					<VictoryBar data={data} x="timestamp" y="y" />
-				</VictoryChart>
-			</div>
-			<div className={css.chart}>
-				<strong>Z</strong>
-				<VictoryChart
-					width={600}
-					height={400}
-					domainPadding={20}
-					theme={VictoryTheme.material}
-				>
-					<VictoryAxis dependentAxis domain={[50]} />
-					<VictoryBar data={data} x="timestamp" y="z" />
 				</VictoryChart>
 			</div>
 		</div>
