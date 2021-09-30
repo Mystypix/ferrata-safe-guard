@@ -74,16 +74,19 @@ function SessionDetailPage(props) {
 			projectname: session.name,
 			location: session.location,
 			geolocation: geolocation,
-		}
+		};
 
-		emailjs.send(`gmail`, process.env.TEMPLATE_ID, emailData, process.env.USER_ID)
-			.then((result) => {
-				alert("Message Sent, We will get back to you shortly", result.text);
-			},
-			(error) => {
-				alert("An error occurred, Please try again", error.text);
-			});
-	}
+		emailjs
+			.send(`gmail`, process.env.TEMPLATE_ID, emailData, process.env.USER_ID)
+			.then(
+				result => {
+					alert('Message Sent, We will get back to you shortly', result.text);
+				},
+				error => {
+					alert('An error occurred, Please try again', error.text);
+				}
+			);
+	};
 
 	return (
 		<div>
@@ -105,7 +108,7 @@ function SessionDetailPage(props) {
 						{/* <button ref={callHelpButton}>Call the help</button> */}
 					</div>
 				)}
-				<div onClick={(e) => sendEmail(e)}>Send email</div>
+				<div onClick={e => sendEmail(e)}>Send email</div>
 			</div>
 			<div className={css.chart}>
 				{displayData.length}
@@ -122,11 +125,7 @@ function SessionDetailPage(props) {
 						// tickFormat={['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4']}
 						tickFormat={x => `${formatTimestamp(x - firstTimestamp)}s`}
 					/>
-					<VictoryAxis
-						dependentAxis
-						// tickFormat specifies how ticks should be displayed
-						// tickFormat={x => `$${x - firstTimestamp}`}
-					/>
+					<VictoryAxis dependentAxis domain={[100]} />
 					<VictoryBar
 						data={displayData}
 						// data accessor for x values
