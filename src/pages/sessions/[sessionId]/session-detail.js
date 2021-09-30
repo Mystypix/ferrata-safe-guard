@@ -32,7 +32,7 @@ function SessionDetailPage(props) {
 	);
 
 	const addData = item => {
-		setData(data => [...data, item].slice(-200));
+		setData(data => [...data, item].slice(-10000));
 	};
 
 	useEffect(async () => {
