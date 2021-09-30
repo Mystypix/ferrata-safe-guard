@@ -2,7 +2,7 @@ export function startTracking(sessionId) {
 	const time = Date.now()
 	if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
 		let lastReadingTimestamp
-		let accelerometer = new LinearAccelerationSensor()
+		let accelerometer = new LinearAccelerationSensor({frequency: 100})
 
 		accelerometer.addEventListener('reading', () => {
 			if (lastReadingTimestamp) {
@@ -13,11 +13,11 @@ export function startTracking(sessionId) {
 		})
 		accelerometer.start()
 
-		if ('GravitySensor' in window) {
-			let gravity = new GravitySensor();
-			gravity.addEventListener('reading', () => accelerationHandler(gravity, 'accelerationWithGravity'))
-			gravity.start()
-		}
+		// if ('GravitySensor' in window) {
+		// 	let gravity = new GravitySensor();
+		// 	gravity.addEventListener('reading', () => accelerationHandler(gravity, 'accelerationWithGravity'))
+		// 	gravity.start()
+		// }
 
 	} else if ('DeviceMotionEvent' in window) {
 		const onDeviceMotion = function (eventData) {
