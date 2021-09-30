@@ -118,7 +118,7 @@ function SessionDetailPage(props) {
 				<div onClick={e => sendEmail(e)}>Send email</div>
 			</div>
 			<div className={css.chart}>
-				{displayData.length}
+				<strong>Distance</strong>
 				<VictoryChart
 					width={600}
 					height={400}
@@ -142,6 +142,42 @@ function SessionDetailPage(props) {
 						// data accessor for y values
 						y="distance"
 					/>
+				</VictoryChart>
+			</div>
+			<div className={css.chart}>
+				<strong>X</strong>
+				<VictoryChart
+					width={600}
+					height={400}
+					domainPadding={20}
+					theme={VictoryTheme.material}
+				>
+					<VictoryAxis dependentAxis domain={[50]} />
+					<VictoryBar data={data} x="timestamp" y="x" />
+				</VictoryChart>
+			</div>
+			<div className={css.chart}>
+				<strong>Y</strong>
+				<VictoryChart
+					width={600}
+					height={400}
+					domainPadding={20}
+					theme={VictoryTheme.material}
+				>
+					<VictoryAxis dependentAxis domain={[50]} />
+					<VictoryBar data={data} x="timestamp" y="y" />
+				</VictoryChart>
+			</div>
+			<div className={css.chart}>
+				<strong>Z</strong>
+				<VictoryChart
+					width={600}
+					height={400}
+					domainPadding={20}
+					theme={VictoryTheme.material}
+				>
+					<VictoryAxis dependentAxis domain={[50]} />
+					<VictoryBar data={data} x="timestamp" y="z" />
 				</VictoryChart>
 			</div>
 		</div>
