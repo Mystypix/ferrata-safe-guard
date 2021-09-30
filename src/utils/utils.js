@@ -45,6 +45,7 @@ export function startTracking(sessionId) {
 			z,
 		}
 		const prevLog = localStorage.getItem(logKey)
+		console.log('prevLog', prevLog)
 		localStorage.setItem(logKey, prevLog + JSON.stringify(record))
 	}
 
