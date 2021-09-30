@@ -5,6 +5,7 @@ import css from './session-detail.module.scss';
 import {Duration} from 'luxon';
 import {getGeolocation, startTracking} from '../../../utils/utils';
 import {VictoryAxis, VictoryChart, VictoryBar, VictoryTheme} from 'victory';
+import emailjs from 'emailjs-com'
 
 const formatTimestamp = ms => {
 	return Math.round(ms / 1000);
@@ -80,6 +81,7 @@ function SessionDetailPage(props) {
 						{/* <button ref={callHelpButton}>Call the help</button> */}
 					</div>
 				)}
+				<div onClick={() => sendEmail()}>Send email</div>
 			</div>
 			<div className={css.chart}>
 				{displayData.length}
@@ -120,6 +122,18 @@ export async function getServerSideProps(context) {
 			sessionId: context.params.sessionId,
 		},
 	};
+}
+
+function sendEmail(e) {
+	e.preventDefault();
+
+	emailjs.sendForm(`gmail`, process.env.TEMPLATE_ID, e.target, process.env.USER_ID)
+		.then((result) => {
+			alert("Message Sent, We will get back to you shortly", result.text);
+		},
+		(error) => {
+			alert("An error occurred, Please try again", error.text);
+		});
 }
 
 export default SessionDetailPage;
