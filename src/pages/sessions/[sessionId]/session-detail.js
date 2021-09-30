@@ -86,7 +86,7 @@ function SessionDetailPage(props) {
 						{/* <button ref={callHelpButton}>Call the help</button> */}
 					</div>
 				)}
-				<div onClick={() => sendEmail()}>Send email</div>
+				<div onClick={(e) => sendEmail(e)}>Send email</div>
 			</div>
 			<div className={css.chart}>
 				{displayData.length}
@@ -129,7 +129,7 @@ export async function getServerSideProps(context) {
 	};
 }
 
-function sendEmail(e) {
+const sendEmail = (e) => {
 	e.preventDefault();
 
 	emailjs.sendForm(`gmail`, process.env.TEMPLATE_ID, e.target, process.env.USER_ID)
