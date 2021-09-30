@@ -3,6 +3,7 @@ import Head from 'next/head';
 import '../globals.css';
 
 export default function MyApp({Component, pageProps}) {
+	const getLayout = Component.getLayout || (page => <Layout>{page}</Layout>);
 	return (
 		<>
 			<Head>
@@ -20,11 +21,10 @@ export default function MyApp({Component, pageProps}) {
 				<link href="/logo192.png" rel="icon" type="image/png" sizes="16x16" />
 				<link href="/logo192.png" rel="icon" type="image/png" sizes="32x32" />
 				<link rel="apple-touch-icon" href="/apple-icon.png"></link>
+
 				<meta name="theme-color" content="#317EFB" />
 			</Head>
-			<Layout>
-				<Component {...pageProps} />
-			</Layout>
+			{getLayout(<Component {...pageProps} />)}
 		</>
 	);
 }

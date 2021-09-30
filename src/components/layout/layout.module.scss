@@ -4,14 +4,11 @@
 }
 
 .header {
-	height: 50px;
-	box-shadow: 0 0 2px rgb(201, 226, 235);
+	height: 52px;
 	position: fixed;
 	top: 0;
 	left: 0;
 	right: 0;
-	background: rgb(201, 226, 235);
-	font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 	z-index: 2;
 }
 
@@ -19,29 +16,42 @@
 	display: flex;
 	height: 100%;
 	align-items: center;
+	padding: 14px;
 }
 
 .headerName {
 	flex: 1 1 auto;
-	font-size: 24px;
+	font-size: 18px;
+	font-weight: bold;
 	text-decoration: none;
-	color: black;
+	color: #1F252E;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+
+.headerTitle {
+	margin-left: 10px;
 }
 
 .headerUser {
 	display: block;
-	flex: 0 0 40px;
-	height: 40px;
-	width: 40px;
-	border-radius: 20px;
-	background: beige;
+	flex: 0 0 36px;
+	height: 36px;
+	width: 36px;
+	border-radius: 18px;
+	background: #DBEDE2;
 	text-align: center;
-	line-height: 40px;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 36px;
+	text-decoration: none;
+	color: black;
 }
 
-
 .main {
-	padding-top: 50px;
+	padding: 24px;
+	padding-top: 74px;
 	position: relative;
 	z-index: 1;
 }

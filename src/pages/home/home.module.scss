@@ -1,3 +1,24 @@
+.homePage {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content:center;
+	padding: 80px 24px 24px 24px;
+}
+
+.homePage h2 {
+	color: #1F252E;
+	font-weight: bold;
+	font-size: 28px;
+	text-align: center;
+	line-height: 40px;
+}
+
+.text {
+	font-size: 16px;
+	line-height: 24px;
+	text-align: center;
+}
+
 .actions {
 	margin-top: 50px;
 	display: flex;
