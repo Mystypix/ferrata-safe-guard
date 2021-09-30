@@ -4,6 +4,11 @@ import climbingSessionsApi from 'api/climbing-sessions';
 import css from './session-detail.module.scss';
 import {Duration} from 'luxon';
 import {getGeolocation, startTracking} from '../../../utils/utils';
+import {VictoryAxis, VictoryChart, VictoryBar, VictoryTheme} from 'victory';
+
+const formatTimestamp = ms => {
+	return Math.round(ms / 1000);
+};
 
 const formatDuration = duration => {
 	return Duration.fromMillis(duration * 1000).toFormat('hh:mm:ss');
@@ -15,6 +20,10 @@ function SessionDetailPage(props) {
 	const [geolocation, setGeolocation] = useState(null);
 	const [inProgress, setInProgress] = useState(false);
 	const [time, setTime] = useState(0);
+	const [data, setData] = useState([]);
+
+	const addData = item => setData([...data, item]);
+
 	useEffect(async () => {
 		const session = await climbingSessionsApi.getSession(props.sessionId);
 		setSession(session);
@@ -27,7 +36,7 @@ function SessionDetailPage(props) {
 		const interval = setInterval(() => {
 			setTime(time => time + 1);
 		}, 1000);
-		startTracking(props.sessionId);
+		startTracking(props.sessionId, addData);
 		return () => clearInterval(interval);
 	}, [inProgress, setTime]);
 
@@ -36,6 +45,21 @@ function SessionDetailPage(props) {
 	} else if (session === null) {
 		return <div>This session does not exist.</div>;
 	}
+
+	// const lastTimestamp = data[data.length - 1].timestamp;
+	const displayData = data
+		.map(item => ({
+			timestamp: item.timestamp,
+			distance: Math.sqrt(
+				Math.pow(item.x, 2) + Math.pow(item.y, 2) + Math.pow(item.z, 2)
+			),
+		}))
+		.slice(-200);
+	// .filter(item => lastTimestamp - item.timestamp < 1000);
+	const firstTimestamp = displayData.length
+		? displayData[0].timestamp
+		: Date.now();
+
 	return (
 		<div>
 			<div>
@@ -56,6 +80,35 @@ function SessionDetailPage(props) {
 						{/* <button ref={callHelpButton}>Call the help</button> */}
 					</div>
 				)}
+			</div>
+			<div className={css.chart}>
+				{displayData.length}
+				<VictoryChart
+					width={600}
+					height={400}
+					domainPadding={20}
+					theme={VictoryTheme.material}
+				>
+					<VictoryAxis
+						// tickValues specifies both the number of ticks and where
+						// they are placed on the axis
+						// tickValues={[1, 2, 3, 4]}
+						// tickFormat={['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4']}
+						tickFormat={x => `${formatTimestamp(x - firstTimestamp)}s`}
+					/>
+					<VictoryAxis
+						dependentAxis
+						// tickFormat specifies how ticks should be displayed
+						// tickFormat={x => `$${x - firstTimestamp}`}
+					/>
+					<VictoryBar
+						data={displayData}
+						// data accessor for x values
+						x="timestamp"
+						// data accessor for y values
+						y="distance"
+					/>
+				</VictoryChart>
 			</div>
 		</div>
 	);
