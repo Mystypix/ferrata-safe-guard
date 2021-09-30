@@ -6,4 +6,7 @@ module.exports = {
 		dest: 'public',
 		runtimeCaching,
 	},
+	eslint: {
+		ignoreDuringBuilds: true,
+	}
 };
