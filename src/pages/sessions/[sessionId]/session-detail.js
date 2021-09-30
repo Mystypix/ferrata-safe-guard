@@ -23,7 +23,9 @@ function SessionDetailPage(props) {
 	const [time, setTime] = useState(0);
 	const [data, setData] = useState([]);
 
-	const addData = item => setData([...data, item]);
+	const addData = item => {
+		setData(data => [...data, item]);
+	};
 
 	useEffect(async () => {
 		const session = await climbingSessionsApi.getSession(props.sessionId);
@@ -37,8 +39,11 @@ function SessionDetailPage(props) {
 		const interval = setInterval(() => {
 			setTime(time => time + 1);
 		}, 1000);
-		startTracking(props.sessionId, addData);
-		return () => clearInterval(interval);
+		const stopTracking = startTracking(props.sessionId, addData);
+		return () => {
+			stopTracking();
+			clearInterval(interval);
+		};
 	}, [inProgress, setTime]);
 
 	if (loading) {

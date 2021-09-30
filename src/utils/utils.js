@@ -4,7 +4,7 @@ export function startTracking(sessionId, addData) {
 		let lastReadingTimestamp;
 		let accelerometer = new LinearAccelerationSensor({frequency: 100});
 
-		accelerometer.addEventListener('reading', () => {
+		const handleAccelerometerReading = () => {
 			if (lastReadingTimestamp) {
 				intervalHandler(
 					Math.round(accelerometer.timestamp - lastReadingTimestamp)
@@ -12,7 +12,9 @@ export function startTracking(sessionId, addData) {
 			}
 			lastReadingTimestamp = accelerometer.timestamp;
 			accelerationHandler(accelerometer, 'acceleration');
-		});
+		};
+
+		accelerometer.addEventListener('reading', handleAccelerometerReading);
 		accelerometer.start();
 
 		// if ('GravitySensor' in window) {
@@ -59,6 +61,12 @@ export function startTracking(sessionId, addData) {
 		const prevLog = localStorage.getItem(logKey);
 		localStorage.setItem(logKey, prevLog + interval + '#');
 	}
+
+	return () => {
+		accelerometer.removeEventListener('reading', handleAccelerometerReading);
+		window.removeEventListener('devicemotion', onDeviceMotion, false);
+		accelerometer.stop();
+	};
 }
 
 export function getGeolocation() {
