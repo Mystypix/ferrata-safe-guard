@@ -1,23 +1,20 @@
 export function startTracking(sessionId) {
+	const time = Date.now()
 	if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
-		console.log(1)
 		let lastReadingTimestamp
 		let accelerometer = new LinearAccelerationSensor()
 
 		accelerometer.addEventListener('reading', () => {
 			if (lastReadingTimestamp) {
-				console.log(11)
 				intervalHandler(Math.round(accelerometer.timestamp - lastReadingTimestamp))
 			}
 			lastReadingTimestamp = accelerometer.timestamp
-			console.log(2)
 			accelerationHandler(accelerometer, 'acceleration')
 		})
 		accelerometer.start()
 
 		if ('GravitySensor' in window) {
 			let gravity = new GravitySensor();
-			console.log(3)
 			gravity.addEventListener('reading', () => accelerationHandler(gravity, 'accelerationWithGravity'))
 			gravity.start()
 		}
@@ -36,8 +33,7 @@ export function startTracking(sessionId) {
 
 	// Handler
 	function accelerationHandler(acceleration, type) {
-		console.log(4)
-		const logKey = `${sessionId}_${type}`
+		const logKey = `${sessionId}_${type}_${time}`
 		const timestamp = Date.now()
 		const x = acceleration.x && acceleration.x.toFixed(3)
 		const y = acceleration.y && acceleration.y.toFixed(3)
@@ -50,12 +46,11 @@ export function startTracking(sessionId) {
 			z,
 		}
 		const prevLog = localStorage.getItem(logKey)
-		console.log('prevLog', prevLog)
 		localStorage.setItem(logKey, prevLog + JSON.stringify(record))
 	}
 
 	function intervalHandler(interval) {
-		const logKey = `${sessionId}_interval`
+		const logKey = `${sessionId}_interval_${time}`
 		const prevLog = localStorage.getItem(logKey)
 		localStorage.setItem(logKey, prevLog + interval + '#')
 	}
