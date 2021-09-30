@@ -19,21 +19,22 @@ const climbingSessions = {
 		const sessions = await this.getSessions();
 		return sessions.find(session => session.id === sessionId) || null;
 	},
-	createSession: async function (session) {
+	createSession: async function (sessionInfo) {
 		const currentUser = sesssionService.getUser();
 		if (!currentUser) throw new Error('Not logged in');
 		await new Promise(resolve => setTimeout(resolve, API_MOCK_TIMEOUT));
 		const sessions = await this.getSessions();
-		sessions.unshift({
-			...session,
+		const session = {
+			...sessionInfo,
 			id: Date.now().toString(16),
 			createdTime: Date.now(),
-		});
+		};
+		sessions.unshift(session);
 		localStorage.setItem(
 			`sessions-${currentUser.id}`,
 			JSON.stringify(sessions)
 		);
-		return sessions;
+		return session;
 	},
 	removeSession: async function (sessionId) {
 		const currentUser = sesssionService.getUser();

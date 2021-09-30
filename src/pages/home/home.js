@@ -15,7 +15,7 @@ function HomePage() {
 			</p>
 			<div className={css.actions}>
 				<Link href="/login">
-					<Button size="medium" type="action">
+					<Button size="large" type="action">
 						Let's Start{' '}
 						<Image src="/icons/arrow-right.svg" width="20" height="10" />
 					</Button>

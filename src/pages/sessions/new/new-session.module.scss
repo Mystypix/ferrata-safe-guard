@@ -1,0 +1,33 @@
+.createSessionForm {
+	padding-bottom: 130px;
+}
+.formGroup + .formGroup {
+	margin-top: 20px;
+}
+
+.formGroup label {
+	color: #5D636C;
+	font-size: 14px;
+	display: block;
+	line-height: 20px;
+	margin-bottom: 4px;
+}
+
+.actions {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	height: 120px;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	background: white;
+	width: 100%;
+	padding-top: 24px;
+	border-top: 1px solid #DDE1E6;
+	z-index: 2;
+}
+
+.actions > * + * {
+	margin-left: 12px;
+}

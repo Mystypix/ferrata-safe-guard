@@ -3,35 +3,118 @@
 }
 
 .card {
-	padding: 15px;
+	width: 100%;
+	padding: 18px 24px;
 	margin-bottom: 15px;
-	border: 2px solid #2e2e2e;
-	border-radius: 4px;
+	border: 1px solid #DDE1E6;
+	border-radius: 12px;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+}
+
+.cardActions {
+	align-self: right;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-end;
+}
+
+.cardAction {
+	width: 48px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cardAction + .cardAction {
+	border-left: 1px solid #C1C7CD;
+}
+
+.cardName {
+	margin-top: 18px;
+	font-weight: bold;
+	line-height: 28px;
+	font-size: 20px;
+	align-self: left;
+	color: #1F252E;
+}
+
+.cardLocation {
+	margin-top: 12px;
+	font-size: 16px;
+	line-height: 24px;
+}
+
+.cardStartClimbing {
+	margin-top: 24px;
+	align-self: center;
+}
+
+.removeForm {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.removeFormInner {
+	padding: 24px;
+	background: white;
+	width: 266px;
+}
+
+.removeFormTitle {
+	font-weight: bold;
+	font-size: 20px;
+	line-height: 28px;
+}
+
+.removeFormDescription {
+	margin-top: 12px;
+	font-size: 16px;
+	line-height: 24px;
+}
+
+.removeFormActions {
+	margin-top: 32px;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.removeFormActions > * + * {
+	margin-left: 12px;
 }
 
 .addSession {
-	width: 50px;
-	height: 50px;
+	display: block;
+	position: fixed;
+	bottom: 24px;
+	right: 24px;
+	width: 48px;
+	height: 48px;
 	display: block;
 	margin: 10px auto;
 	border-radius: 50px;
-	background-color: rgb(201, 226, 235);
-	font-size: 32px;
 	border: 0;
+	background: linear-gradient(133.19deg, #FF8A00 -18.55%, #ED7200 116.34%);
+	font-family: 'Times New Roman', Times, serif;
+	font-weight: bold;
+	font-size: 28px;
+	color: white;
 	text-align: center;
-	line-height: 50px;
+	text-decoration: none;
+	line-height: 48px;
 	cursor: pointer;
 }
 
 .addSession:hover {
 	box-shadow: 0 0 2px #050505;
 	font-size: 40px;
-}
-
-.createSessionSubmit {
-	background: lightblue;
-}
-
-.createSessionCancel {
-	background: lightgrey;
 }

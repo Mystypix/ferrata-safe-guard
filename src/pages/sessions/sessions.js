@@ -1,7 +1,9 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import Router from 'next/router';
 import {useState, useEffect, useRef} from 'react';
 import climbingSessionsApi from 'api/climbing-sessions';
+import Button from 'components/button';
 import css from './sessions.module.scss';
 
 function SessionCard({session, setSessions}) {
@@ -19,110 +21,71 @@ function SessionCard({session, setSessions}) {
 		return <div className={css.card}>Removing...</div>;
 	} else if (showRemoveForm) {
 		return (
-			<div className={css.card}>
-				<p>
-					Are you sure you want to remove session{' '}
-					<strong>{session.name}</strong>?
-				</p>
-				<button onClick={handleRemove}>Confirm</button>{' '}
-				<button onClick={() => setShowRemoveForm(false)}>Cancel</button>
+			<div className={css.removeForm}>
+				<div className={css.removeFormInner}>
+					<div className={css.removeFormTitle}>Remove Session</div>
+					<div className={css.removeFormDescription}>
+						Are you sure you want to permantently remove{' '}
+						<strong>{session.name}</strong>?
+					</div>
+					<div className={css.removeFormActions}>
+						<Button
+							type="default"
+							size="small"
+							onClick={() => setShowRemoveForm(false)}
+						>
+							Cancel
+						</Button>
+						<Button type="action" size="small" onClick={handleRemove}>
+							Remove
+						</Button>
+					</div>
+				</div>
 			</div>
 		);
 	}
 
 	return (
 		<div className={css.card}>
-			<div>
-				<strong>Session {session.name}</strong>
+			<div className={css.cardActions}>
+				<div className={css.cardAction}>
+					<Image src="/icons/pencil.svg" width="18" height="18" />
+				</div>
+				<div className={css.cardAction} onClick={() => setShowRemoveForm(true)}>
+					<Image src="/icons/trash.svg" width="20" height="21" />
+				</div>
 			</div>
-			<div>Location: {session.location}</div>
-			<Link
-				href={{
-					pathname: '/sessions/[sessionId]',
-					query: {sessionId: session.id},
-				}}
-			>
-				<button>Detail</button>
-			</Link>{' '}
-			<button onClick={() => setShowRemoveForm(true)}>Remove</button>
+			<div className={css.cardName}>{session.name}</div>
+			{session.name && (
+				<div className={css.cardLocation}>{session.location}</div>
+			)}
+			<div className={css.cardStartClimbing}>
+				<Link
+					href={{
+						pathname: '/sessions/[sessionId]',
+						query: {sessionId: session.id},
+					}}
+				>
+					<Button size="medium" type="action">
+						Start Climbing
+					</Button>
+				</Link>
+			</div>
 		</div>
 	);
 }
 
-function CreateSession({setSessions}) {
-	const [showForm, setShowForm] = useState(false);
-	const [loading, setLoading] = useState(false);
-	const formRef = useRef();
-
-	const handleCreateSession = async ev => {
-		ev.preventDefault();
-		const form = formRef.current;
-		if (!form) return;
-		setLoading(true);
-		const sessions = await climbingSessionsApi.createSession({
-			id: Math.random().toString(),
-			name: form.name.value,
-			location: form.location.value,
-		});
-		setLoading(false);
-		setShowForm(false);
-		setSessions(sessions);
-	};
-
-	if (loading) {
-		return <div>Creating new session...</div>;
-	} else if (showForm) {
-		return (
-			<form
-				className={css.createSessionForm}
-				onSubmit={handleCreateSession}
-				ref={formRef}
-			>
-				<table>
-					<tbody>
-						<tr>
-							<td>Session Name: </td>
-							<td>
-								<input name="name" />
-							</td>
-						</tr>
-						<tr>
-							<td>Location: </td>
-							<td>
-								<input name="location" />
-							</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td>
-								<button className={css.createSessionSubmit}>
-									Create Session
-								</button>
-								<button
-									className={css.createSessionCancel}
-									onClick={ev => {
-										ev.preventDefault();
-										setShowForm(false);
-									}}
-								>
-									Cancel
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
-		);
-	}
-
+function CreateSession() {
 	return (
-		<button
-			title="Add Session"
-			className={css.addSession}
-			onClick={() => setShowForm(true)}
-		>
-			+
-		</button>
+		<Link href="/sessions/new" passHref>
+			<a
+				title="Add Session"
+				className={css.addSession}
+				onClick={() => setShowForm(true)}
+			>
+				+
+			</a>
+		</Link>
 	);
 }
 
@@ -147,7 +110,7 @@ function SessionsPage() {
 		: null;
 	return (
 		<div>
-			<CreateSession setSessions={setSessions} />
+			<CreateSession />
 			{!cards && 'Loading...'}
 			{cards && cards.length === 0 && 'There are no sessions yet.'}
 			{cards && <div className={css.cardList}>{cards}</div>}
