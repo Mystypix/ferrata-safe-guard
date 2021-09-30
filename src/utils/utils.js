@@ -46,7 +46,7 @@ export function startTracking(sessionId) {
 			z,
 		}
 		const prevLog = localStorage.getItem(logKey)
-		localStorage.setItem(logKey, prevLog + JSON.stringify(record))
+		localStorage.setItem(logKey, '[', prevLog + JSON.stringify(record) + ']')
 	}
 
 	function intervalHandler(interval) {
