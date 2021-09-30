@@ -22,10 +22,17 @@ function SessionDetailPage(props) {
 	const [geolocation, setGeolocation] = useState(null);
 	const [inProgress, setInProgress] = useState(false);
 	const [time, setTime] = useState(0);
-	const [data, setData] = useState([]);
+	const [data, setData] = useState(
+		new Array(200).fill({
+			timestamp: Date.now(),
+			x: 0,
+			y: 0,
+			z: 0,
+		})
+	);
 
 	const addData = item => {
-		setData(data => [...data, item].slice(-100));
+		setData(data => [...data, item].slice(-200));
 	};
 
 	useEffect(async () => {
@@ -118,13 +125,15 @@ function SessionDetailPage(props) {
 					domainPadding={20}
 					theme={VictoryTheme.material}
 				>
-					<VictoryAxis
-						// tickValues specifies both the number of ticks and where
-						// they are placed on the axis
-						// tickValues={[1, 2, 3, 4]}
-						// tickFormat={['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4']}
-						tickFormat={x => `${formatTimestamp(x - firstTimestamp)}s`}
-					/>
+					{false && (
+						<VictoryAxis
+							// tickValues specifies both the number of ticks and where
+							// they are placed on the axis
+							// tickValues={[1, 2, 3, 4]}
+							// tickFormat={['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4']}
+							tickFormat={x => `${formatTimestamp(x - firstTimestamp)}s`}
+						/>
+					)}
 					<VictoryAxis dependentAxis domain={[100]} />
 					<VictoryBar
 						data={displayData}
