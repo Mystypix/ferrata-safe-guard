@@ -1,4 +1,5 @@
 export function startTracking(sessionId) {
+	const timestamp = new Date();
 	if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
 		let lastReadingTimestamp
 		let accelerometer = new LinearAccelerationSensor()
@@ -32,19 +33,36 @@ export function startTracking(sessionId) {
 
 	// Handler
 	function accelerationHandler(acceleration, type) {
-		const logKey = `${sessionId}_${type}`
+		const logKey = `${sessionId}_${type}_${timestamp}`
 		let info, xyz = "[X, Y, Z];"
+		const x = acceleration.x && acceleration.x.toFixed(3)
+		const y = acceleration.y && acceleration.y.toFixed(3)
+		const z = acceleration.z && acceleration.z.toFixed(3)
 
-		info = xyz.replace("X", acceleration.x && acceleration.x.toFixed(3))
-		info = info.replace("Y", acceleration.y && acceleration.y.toFixed(3))
-		info = info.replace("Z", acceleration.z && acceleration.z.toFixed(3))
+		info = xyz.replace("X", x)
+		info = info.replace("Y", y)
+		info = info.replace("Z", z)
 		const prevLog = localStorage.getItem(logKey)
 		localStorage.setItem(logKey, prevLog + info)
 	}
 
 	function intervalHandler(interval) {
-		const logKey = `${sessionId}_interval`
+		const logKey = `${sessionId}_interval_${timestamp}`
 		const prevLog = localStorage.getItem(logKey)
 		localStorage.setItem(logKey, prevLog + interval + ';')
+	}
+}
+
+export function getGeolocation() {
+	function success(position) {
+		return position
+	}
+
+	function error(error) {
+		console.log('fuck', error)
+	}
+
+	if ('geolocation' in navigator) {
+		return navigator.geolocation.getCurrentPosition(success, error)
 	}
 }

@@ -3,7 +3,7 @@ import {useState, useEffect, useRef} from 'react';
 import climbingSessionsApi from 'api/climbing-sessions';
 import css from './session-detail.module.scss';
 import {Duration} from 'luxon';
-import {startTracking} from '../utils';
+import {getGeolocation, startTracking} from '../utils';
 
 const formatDuration = duration => {
 	return Duration.fromMillis(duration * 1000).toFormat('hh:mm:ss');
@@ -12,12 +12,14 @@ const formatDuration = duration => {
 function SessionDetailPage(props) {
 	const [loading, setLoading] = useState(true);
 	const [session, setSession] = useState(null);
+	const [geolocation, setGeolocation] = useState(null);
 	const [inProgress, setInProgress] = useState(false);
 	const [time, setTime] = useState(0);
 	useEffect(async () => {
 		const session = await climbingSessionsApi.getSession(props.sessionId);
 		setSession(session);
 		setLoading(false);
+		setGeolocation(getGeolocation());
 	}, [props.sessionId]);
 
 	useEffect(() => {
@@ -43,14 +45,15 @@ function SessionDetailPage(props) {
 			<div>
 				{!inProgress && (
 					<div>
-						<button onClick={() => setInProgress(true)}>Start Climbing</button>{' '}
-						{formatDuration(time)}
+						<div>{formatDuration(time)}</div>
+						<button onClick={() => setInProgress(true)}>Start Climbing</button>
 					</div>
 				)}
 				{inProgress && (
 					<div>
-						<button onClick={() => setInProgress(false)}>Stop Climbing</button>{' '}
-						{formatDuration(time)}
+						<div>{formatDuration(time)}</div>
+						<button onClick={() => setInProgress(false)}>Stop Climbing</button>
+						{/* <button ref={callHelpButton}>Call the help</button> */}
 					</div>
 				)}
 			</div>
