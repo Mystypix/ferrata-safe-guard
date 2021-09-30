@@ -7,6 +7,8 @@ import {Duration} from 'luxon';
 import {getGeolocation, startTracking} from '../../../utils/utils';
 import {VictoryAxis, VictoryChart, VictoryBar, VictoryTheme} from 'victory';
 import emailjs from 'emailjs-com';
+import FallState from './fall-state'
+import ActiveState from './active-state'
 
 const formatTimestamp = ms => {
 	return Math.round(ms / 1000);
@@ -24,6 +26,8 @@ function SessionDetailPage(props) {
 	const [inProgress, setInProgress] = useState(false);
 	const [time, setTime] = useState(0);
 	const [data, setData] = useState([]);
+	const [showActiveState, setShowActiveState] = useState(false);
+	const [showFallState, setShowFallState] = useState(false);
 
 	const addData = item => {
 		setData(data => [...data, item].slice(-100));
@@ -68,22 +72,32 @@ function SessionDetailPage(props) {
 		? displayData[0].timestamp
 		: Date.now();
 
-	const sendEmail = () => { // TODO - use somewhere
+	function sendEmail() {
 		const emailData = {
 			username: user.username,
 			projectname: session.name,
 			location: session.location,
-			geolocation: geolocation,
+			geolocation: geolocation, // TODO add correct data
 		}
 
-		emailjs.send(process.env.SERVICE_ID, process.env.TEMPLATE_ID, emailData, process.env.USER_ID)
-			.then((result) => {
-				alert("Message Sent, We will get back to you shortly", result.text);
-			},
-			(error) => {
-				alert("An error occurred, Please try again", error.text);
-			});
+		// TODO turn on after fix of env
+
+		// emailjs.send(process.env.SERVICE_ID, process.env.TEMPLATE_ID, emailData, process.env.USER_ID)
+		// 	.then((result) => {
+		// 		alert("Message Sent, We will get back to you shortly", result.text);
+		// 	},
+		// 	(error) => {
+		// 		alert("An error occurred, Please try again", error.text);
+		// 	});
 	}
+
+	function cancelFallState() {
+		setShowFallState(false)
+	}
+
+	if (showActiveState) return <ActiveState sendForHelp={sendEmail} />
+
+	if (showFallState) return <FallState cancelFallState={cancelFallState} />
 
 	return (
 		<div>
