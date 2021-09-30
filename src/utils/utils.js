@@ -1,10 +1,15 @@
 export function startTracking(sessionId, addData) {
 	const time = Date.now();
-	if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
+	let accelerometer, handleAccelerometerReading, onDeviceMotion, dummyInterval;
+	if (
+		window.innerWidth < 1000 &&
+		'LinearAccelerationSensor' in window &&
+		'Gyroscope' in window
+	) {
 		let lastReadingTimestamp;
-		let accelerometer = new LinearAccelerationSensor({frequency: 100});
+		accelerometer = new LinearAccelerationSensor({frequency: 100});
 
-		const handleAccelerometerReading = () => {
+		handleAccelerometerReading = () => {
 			if (lastReadingTimestamp) {
 				intervalHandler(
 					Math.round(accelerometer.timestamp - lastReadingTimestamp)
@@ -22,8 +27,8 @@ export function startTracking(sessionId, addData) {
 		// 	gravity.addEventListener('reading', () => accelerationHandler(gravity, 'accelerationWithGravity'))
 		// 	gravity.start()
 		// }
-	} else if ('DeviceMotionEvent' in window) {
-		const onDeviceMotion = function (eventData) {
+	} else if (window.innerWidth < 1000 && 'DeviceMotionEvent' in window) {
+		onDeviceMotion = function (eventData) {
 			accelerationHandler(eventData.acceleration, 'acceleration');
 			accelerationHandler(
 				eventData.accelerationIncludingGravity,
@@ -34,6 +39,15 @@ export function startTracking(sessionId, addData) {
 
 		window.addEventListener('devicemotion', onDeviceMotion, false);
 	} else {
+		dummyInterval = setInterval(() => {
+			const record = {
+				timestamp: Date.now(),
+				x: Math.random(),
+				y: Math.random(),
+				z: Math.random(),
+			};
+			addData(record);
+		});
 		console.log('No device motion sensor available');
 	}
 
@@ -63,9 +77,14 @@ export function startTracking(sessionId, addData) {
 	}
 
 	return () => {
-		accelerometer.removeEventListener('reading', handleAccelerometerReading);
-		window.removeEventListener('devicemotion', onDeviceMotion, false);
-		accelerometer.stop();
+		if (accelerometer) {
+			accelerometer.removeEventListener('reading', handleAccelerometerReading);
+			accelerometer.stop();
+		} else if (onDeviceMotion) {
+			window.removeEventListener('devicemotion', onDeviceMotion, false);
+		} else {
+			clearInterval(dummyInterval);
+		}
 	};
 }
 

@@ -5,7 +5,7 @@ import css from './session-detail.module.scss';
 import {Duration} from 'luxon';
 import {getGeolocation, startTracking} from '../../../utils/utils';
 import {VictoryAxis, VictoryChart, VictoryBar, VictoryTheme} from 'victory';
-import emailjs from 'emailjs-com'
+import emailjs from 'emailjs-com';
 
 const formatTimestamp = ms => {
 	return Math.round(ms / 1000);
@@ -24,7 +24,7 @@ function SessionDetailPage(props) {
 	const [data, setData] = useState([]);
 
 	const addData = item => {
-		setData(data => [...data, item]);
+		setData(data => [...data, item].slice(-100));
 	};
 
 	useEffect(async () => {
@@ -53,14 +53,12 @@ function SessionDetailPage(props) {
 	}
 
 	// const lastTimestamp = data[data.length - 1].timestamp;
-	const displayData = data
-		.map(item => ({
-			timestamp: item.timestamp,
-			distance: Math.sqrt(
-				Math.pow(item.x, 2) + Math.pow(item.y, 2) + Math.pow(item.z, 2)
-			),
-		}))
-		.slice(-200);
+	const displayData = data.map(item => ({
+		timestamp: item.timestamp,
+		distance: Math.sqrt(
+			Math.pow(item.x, 2) + Math.pow(item.y, 2) + Math.pow(item.z, 2)
+		),
+	}));
 	// .filter(item => lastTimestamp - item.timestamp < 1000);
 	const firstTimestamp = displayData.length
 		? displayData[0].timestamp
@@ -132,13 +130,16 @@ export async function getServerSideProps(context) {
 const sendEmail = (e) => {
 	e.preventDefault();
 
-	emailjs.sendForm(`gmail`, process.env.TEMPLATE_ID, e.target, process.env.USER_ID)
-		.then((result) => {
-			alert("Message Sent, We will get back to you shortly", result.text);
-		},
-		(error) => {
-			alert("An error occurred, Please try again", error.text);
-		});
+	emailjs
+		.sendForm(`gmail`, process.env.TEMPLATE_ID, e.target, process.env.USER_ID)
+		.then(
+			result => {
+				alert('Message Sent, We will get back to you shortly', result.text);
+			},
+			error => {
+				alert('An error occurred, Please try again', error.text);
+			}
+		);
 }
 
 export default SessionDetailPage;
