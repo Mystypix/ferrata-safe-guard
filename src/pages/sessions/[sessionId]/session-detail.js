@@ -18,6 +18,7 @@ const formatDuration = duration => {
 function SessionDetailPage(props) {
 	const [loading, setLoading] = useState(true);
 	const [session, setSession] = useState(null);
+	const [user, setUser] = useState(null);
 	const [geolocation, setGeolocation] = useState(null);
 	const [inProgress, setInProgress] = useState(false);
 	const [time, setTime] = useState(0);
@@ -29,7 +30,9 @@ function SessionDetailPage(props) {
 
 	useEffect(async () => {
 		const session = await climbingSessionsApi.getSession(props.sessionId);
+		const user = await climbingSessionsApi.getSession('session');
 		setSession(session);
+		setUser(user);
 		setLoading(false);
 		setGeolocation(getGeolocation());
 	}, [props.sessionId]);
@@ -63,6 +66,24 @@ function SessionDetailPage(props) {
 	const firstTimestamp = displayData.length
 		? displayData[0].timestamp
 		: Date.now();
+
+	const sendEmail = () => {
+		e.preventDefault();
+		const emailData = {
+			username: user.username,
+			projectname: session.name,
+			location: session.location,
+			geolocation: geolocation,
+		}
+
+		emailjs.send(`gmail`, process.env.TEMPLATE_ID, emailData, process.env.USER_ID)
+			.then((result) => {
+				alert("Message Sent, We will get back to you shortly", result.text);
+			},
+			(error) => {
+				alert("An error occurred, Please try again", error.text);
+			});
+	}
 
 	return (
 		<div>
@@ -125,21 +146,6 @@ export async function getServerSideProps(context) {
 			sessionId: context.params.sessionId,
 		},
 	};
-}
-
-const sendEmail = (e) => {
-	e.preventDefault();
-
-	emailjs
-		.sendForm(`gmail`, process.env.TEMPLATE_ID, e.target, process.env.USER_ID)
-		.then(
-			result => {
-				alert('Message Sent, We will get back to you shortly', result.text);
-			},
-			error => {
-				alert('An error occurred, Please try again', error.text);
-			}
-		);
 }
 
 export default SessionDetailPage;
