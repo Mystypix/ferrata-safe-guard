@@ -61,10 +61,12 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	background: rgba(12,15,18,0.7);
 }
 .removeFormInner {
 	padding: 24px;
 	background: white;
+	border-radius: 12px;
 	width: 266px;
 }
 
@@ -83,7 +85,7 @@
 .removeFormActions {
 	margin-top: 32px;
 	display: flex;
-	flex-flow: column nowrap;
+	flex-flow: row nowrap;
 	justify-content: center;
 	align-items: center;
 }

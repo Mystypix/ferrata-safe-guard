@@ -78,11 +78,7 @@ function SessionCard({session, setSessions}) {
 function CreateSession() {
 	return (
 		<Link href="/sessions/new" passHref>
-			<a
-				title="Add Session"
-				className={css.addSession}
-				onClick={() => setShowForm(true)}
-			>
+			<a title="Add Session" className={css.addSession}>
 				+
 			</a>
 		</Link>

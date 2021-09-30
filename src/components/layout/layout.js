@@ -1,10 +1,9 @@
 import css from './layout.module.scss';
 import Link from 'next/link';
 import Image from 'next/image';
+import sessionService from 'services/session';
 
-export default function Layout(props) {
-	const {children, goBack, goBackTitle} = props;
-	console.log({props});
+export default function Layout({children, goBack, goBackTitle}) {
 	return (
 		<>
 			<header className={css.header}>
@@ -25,7 +24,7 @@ export default function Layout(props) {
 							</a>
 						</Link>
 					)}
-
+					{sessionService}
 					<Link href="/settings" passHref>
 						<a className={css.headerUser}>MK</a>
 					</Link>

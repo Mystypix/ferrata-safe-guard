@@ -50,13 +50,13 @@ function LoginPage() {
 				</div>
 				{logginError && <div className={css.logginError}>{logginError}</div>}
 				<div className={css.actionButton}>
-					<Button type="primary" size="large">
+					<Button type="action" size="large">
 						Log In
 					</Button>
 				</div>
 			</form>
-			<div>
-				Do you not have an account yet? <Link href="signup">Sign up</Link>.
+			<div className={css.newAccount}>
+				Do have an account? <Link href="signup">Create one now.</Link>.
 			</div>
 		</div>
 	);

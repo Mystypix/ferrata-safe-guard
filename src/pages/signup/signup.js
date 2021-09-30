@@ -19,7 +19,7 @@ function SignupPage() {
 		ev.preventDefault();
 		const form = formRef.current;
 		if (!form) return;
-		if (step < 4) {
+		if (step < 1) {
 			setStep(value => value + 1);
 			return;
 		}
@@ -65,21 +65,23 @@ function SignupPage() {
 				</div>
 
 				<div className={css.actionButton}>
-					{step < 4 ? (
+					{step < 1 ? (
 						<Button type="action" size="large">
 							Next
 						</Button>
 					) : (
-						<Button type="primary" size="large">
+						<Button type="action" size="large">
 							Create Account
 						</Button>
 					)}
 				</div>
 			</form>
 
-			<div className={classnames(css.steps)}>
-				<Steps current={step} count={4} onChange={value => setStep(value)} />
-			</div>
+			{false && (
+				<div className={classnames(css.steps)}>
+					<Steps current={step} count={1} onChange={value => setStep(value)} />
+				</div>
+			)}
 		</div>
 	);
 }
