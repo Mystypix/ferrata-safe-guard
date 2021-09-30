@@ -1,19 +1,24 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Router from 'next/router';
-import {useState, useEffect, useRef} from 'react';
+import {useState, useContext, useEffect, useRef} from 'react';
 import climbingSessionsApi from 'api/climbing-sessions';
 import Button from 'components/button';
 import css from './sessions.module.scss';
+import SessionContext from 'components/session-context';
 
-function SessionCard({session, setSessions}) {
+function ClimbingSessionCard({climbingSession, setClimbingSessions}) {
 	const [showRemoveForm, setShowRemoveForm] = useState(false);
 	const [removing, setRemoving] = useState(false);
+	const accountSession = useContext(SessionContext);
 
 	const handleRemove = async () => {
 		setRemoving(true);
-		const sessions = await climbingSessionsApi.removeSession(session.id);
-		setSessions(sessions);
+		const climbingSessions = await climbingSessionsApi.removeSession(
+			accountSession.currentUser,
+			climbingSession.id
+		);
+		setClimbingSessions(climbingSessions);
 		// setRemoving(false);
 	};
 
@@ -26,7 +31,7 @@ function SessionCard({session, setSessions}) {
 					<div className={css.removeFormTitle}>Remove Session</div>
 					<div className={css.removeFormDescription}>
 						Are you sure you want to permantently remove{' '}
-						<strong>{session.name}</strong>?
+						<strong>{climbingSession.name}</strong>?
 					</div>
 					<div className={css.removeFormActions}>
 						<Button
@@ -55,15 +60,15 @@ function SessionCard({session, setSessions}) {
 					<Image src="/icons/trash.svg" width="20" height="21" />
 				</div>
 			</div>
-			<div className={css.cardName}>{session.name}</div>
-			{session.name && (
-				<div className={css.cardLocation}>{session.location}</div>
+			<div className={css.cardName}>{climbingSession.name}</div>
+			{climbingSession.location && (
+				<div className={css.cardLocation}>{climbingSession.location}</div>
 			)}
 			<div className={css.cardStartClimbing}>
 				<Link
 					href={{
 						pathname: '/sessions/[sessionId]',
-						query: {sessionId: session.id},
+						query: {sessionId: climbingSession.id},
 					}}
 				>
 					<Button size="medium" type="action">
@@ -75,7 +80,7 @@ function SessionCard({session, setSessions}) {
 	);
 }
 
-function CreateSession() {
+function CreateClimbingSession() {
 	return (
 		<Link href="/sessions/new" passHref>
 			<a title="Add Session" className={css.addSession}>
@@ -86,29 +91,33 @@ function CreateSession() {
 }
 
 function SessionsPage() {
-	const [sessions, setSessions] = useState(null);
+	const [climbingSessions, setClimbingSessions] = useState(null);
+	const accountSession = useContext(SessionContext);
+
 	useEffect(async () => {
 		try {
-			const sessions = await climbingSessionsApi.getSessions();
-			setSessions(sessions);
+			const climbingSessions = await climbingSessionsApi.getSessions(
+				accountSession.currentUser
+			);
+			setClimbingSessions(climbingSessions);
 		} catch (err) {
 			Router.push('/home');
 		}
 	}, []);
-	const cards = sessions
-		? sessions.map(session => (
-				<SessionCard
-					key={'session-' + session.id}
-					session={session}
-					setSessions={setSessions}
+	const cards = climbingSessions
+		? climbingSessions.map(climbingSession => (
+				<ClimbingSessionCard
+					key={'climbing-session-' + climbingSession.id}
+					climbingSession={climbingSession}
+					setClimbingSessions={setClimbingSessions}
 				/>
 		  ))
 		: null;
 	return (
 		<div>
-			<CreateSession />
+			<CreateClimbingSession />
 			{!cards && 'Loading...'}
-			{cards && cards.length === 0 && 'There are no sessions yet.'}
+			{cards && cards.length === 0 && 'There are no climbing sessions yet.'}
 			{cards && <div className={css.cardList}>{cards}</div>}
 		</div>
 	);

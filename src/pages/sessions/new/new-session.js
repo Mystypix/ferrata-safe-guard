@@ -1,36 +1,41 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Router from 'next/router';
-import {useState, useEffect, useRef} from 'react';
+import {useState, useContext, useEffect, useRef} from 'react';
 import climbingSessionsApi from 'api/climbing-sessions';
 import Button from 'components/button';
 import Input from 'components/input';
 import Textarea from 'components/textarea';
 import Layout from 'components/layout';
+import SessionContext from 'components/session-context';
 import css from './new-session.module.scss';
 
 function NewSessionPage() {
 	const [loading, setLoading] = useState(false);
 	const formRef = useRef();
+	const accountSession = useContext(SessionContext);
 
 	const handleCreateSession = async ev => {
 		ev.preventDefault();
 		const form = formRef.current;
 		if (!form) return;
 		setLoading(true);
-		const session = await climbingSessionsApi.createSession({
-			id: Math.random().toString(),
-			name: form.name.value,
-			location: form.location.value,
-			mountain: form.mountain.value,
-			description: form.description.value,
-		});
+		const climbingSession = await climbingSessionsApi.createSession(
+			accountSession.currentUser,
+			{
+				id: Math.random().toString(),
+				name: form.name.value,
+				location: form.location.value,
+				mountain: form.mountain.value,
+				description: form.description.value,
+			}
+		);
 
-		Router.push('/sessions/' + session.id);
+		Router.push('/sessions/' + climbingSession.id);
 	};
 
 	if (loading) {
-		return <div>Creating new session...</div>;
+		return <div>Creating new climbing session...</div>;
 	}
 	return (
 		<form

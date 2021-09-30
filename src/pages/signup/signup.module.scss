@@ -25,10 +25,10 @@
 	align-items: center;
 }
 .steps {
-	position: fixed;
-	bottom: 60px;
-	left: 50%;
-	transform: translateX(-50%);
+	margin-top: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 .creatingAccount {
 	text-align: center;

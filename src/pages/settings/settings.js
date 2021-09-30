@@ -1,13 +1,15 @@
 import classnames from 'classnames';
 import Router from 'next/router';
-import {useState, useEffect, useRef} from 'react';
+import {useState, useContext, useEffect, useRef} from 'react';
 import css from './settings.module.scss';
 import Button from 'components/button';
-import sessionService from 'services/session';
+import SessionContext from 'components/session-context';
 
 function SettingsPage() {
+	const accountSession = useContext(SessionContext);
+
 	const handleLogOut = () => {
-		sessionService.setUser(null);
+		accountSession.setCurrentUser(null);
 		Router.push('/');
 	};
 	return (

@@ -1,18 +1,19 @@
 import classnames from 'classnames';
 import Link from 'next/link';
 import Router from 'next/router';
-import {useState, useEffect, useRef} from 'react';
+import {useState, useContext, useEffect, useRef} from 'react';
 import usersApi from 'api/users';
 import css from './login.module.scss';
 import Button from 'components/button';
 import Input from 'components/input';
 import Password from 'components/password';
-import sessionService from 'services/session';
+import SessionContext from 'components/session-context';
 
 function LoginPage() {
 	const [loggingIn, setLoggingIn] = useState(false);
 	const [logginError, setLogginError] = useState('');
 	const formRef = useRef();
+	const accountSession = useContext(SessionContext);
 
 	const handleFormSubmit = async ev => {
 		ev.preventDefault();
@@ -24,7 +25,7 @@ function LoginPage() {
 			form.password.value.trim()
 		);
 		if (user) {
-			sessionService.setUser(user);
+			accountSession.setCurrentUser(user);
 			Router.push('/sessions');
 		} else {
 			setLogginError('Invalid name or password');
@@ -56,7 +57,7 @@ function LoginPage() {
 				</div>
 			</form>
 			<div className={css.newAccount}>
-				Do have an account? <Link href="signup">Create one now.</Link>.
+				Do have an account? <Link href="/signup">Create one now.</Link>.
 			</div>
 		</div>
 	);

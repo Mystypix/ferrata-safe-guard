@@ -1,10 +1,7 @@
-import sesssionService from 'services/session';
-
-const API_MOCK_TIMEOUT = 500;
+const API_MOCK_TIMEOUT = 100;
 
 const climbingSessions = {
-	getSessions: async function () {
-		const currentUser = sesssionService.getUser();
+	getSessions: async function (currentUser) {
 		if (!currentUser) throw new Error('Not logged in');
 		await new Promise(resolve => setTimeout(resolve, API_MOCK_TIMEOUT));
 		let sessions = localStorage.getItem(`sessions-${currentUser.id}`);
@@ -12,18 +9,16 @@ const climbingSessions = {
 		sessions.sort((a, b) => b.createdTime - a.createdTime);
 		return sessions;
 	},
-	getSession: async function (sessionId) {
-		const currentUser = sesssionService.getUser();
+	getSession: async function (currentUser, sessionId) {
 		if (!currentUser) throw new Error('Not logged in');
 		await new Promise(resolve => setTimeout(resolve, API_MOCK_TIMEOUT));
-		const sessions = await this.getSessions();
+		const sessions = await this.getSessions(currentUser);
 		return sessions.find(session => session.id === sessionId) || null;
 	},
-	createSession: async function (sessionInfo) {
-		const currentUser = sesssionService.getUser();
+	createSession: async function (currentUser, sessionInfo) {
 		if (!currentUser) throw new Error('Not logged in');
 		await new Promise(resolve => setTimeout(resolve, API_MOCK_TIMEOUT));
-		const sessions = await this.getSessions();
+		const sessions = await this.getSessions(currentUser);
 		const session = {
 			...sessionInfo,
 			id: Date.now().toString(16),
@@ -36,11 +31,10 @@ const climbingSessions = {
 		);
 		return session;
 	},
-	removeSession: async function (sessionId) {
-		const currentUser = sesssionService.getUser();
+	removeSession: async function (currentUser, sessionId) {
 		if (!currentUser) throw new Error('Not logged in');
 		await new Promise(resolve => setTimeout(resolve, API_MOCK_TIMEOUT));
-		let sessions = await this.getSessions();
+		let sessions = await this.getSessions(currentUser);
 		sessions = sessions.filter(session => session.id !== sessionId);
 		localStorage.setItem(
 			`sessions-${currentUser.id}`,

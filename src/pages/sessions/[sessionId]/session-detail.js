@@ -1,14 +1,15 @@
 import Link from 'next/link';
-import {useState, useEffect, useRef} from 'react';
+import {useState, useContext, useEffect, useRef} from 'react';
 import climbingSessionsApi from 'api/climbing-sessions';
-import sesssionService from 'services/session';
 import css from './session-detail.module.scss';
 import {Duration} from 'luxon';
 import {getGeolocation, startTracking} from '../../../utils/utils';
 import {VictoryAxis, VictoryChart, VictoryBar, VictoryTheme} from 'victory';
 import emailjs from 'emailjs-com';
-import FallState from './fall-state'
-import ActiveState from './active-state'
+import SessionContext from 'components/session-context';
+import FallState from './fall-state';
+import ActiveState from './active-state';
+import Router from 'next/router';
 
 const formatTimestamp = ms => {
 	return Math.round(ms / 1000);
@@ -21,7 +22,6 @@ const formatDuration = duration => {
 function SessionDetailPage(props) {
 	const [loading, setLoading] = useState(true);
 	const [session, setSession] = useState(null);
-	const [user, setUser] = useState(null);
 	const [geolocation, setGeolocation] = useState(null);
 	const [inProgress, setInProgress] = useState(false);
 	const [time, setTime] = useState(0);
@@ -29,15 +29,24 @@ function SessionDetailPage(props) {
 	const [showActiveState, setShowActiveState] = useState(false);
 	const [showFallState, setShowFallState] = useState(false);
 
+	const accountSession = useContext(SessionContext);
+
 	const addData = item => {
 		setData(data => [...data, item].slice(-100));
 	};
 
 	useEffect(async () => {
-		const session = await climbingSessionsApi.getSession(props.sessionId);
-		const user = await sesssionService.getUser();
-		setSession(session);
-		setUser(user);
+		let climbingSession;
+		try {
+			climbingSession = await climbingSessionsApi.getSession(
+				accountSession.currentUser,
+				props.sessionId
+			);
+		} catch (err) {
+			console.log(err);
+			Router.push('/');
+		}
+		setSession(climbingSession);
 		setLoading(false);
 		setGeolocation(getGeolocation());
 	}, [props.sessionId]);
@@ -74,11 +83,11 @@ function SessionDetailPage(props) {
 
 	function sendEmail() {
 		const emailData = {
-			username: user.username,
+			username: accountSession.currentUser.username,
 			projectname: session.name,
 			location: session.location,
 			geolocation: geolocation, // TODO add correct data
-		}
+		};
 
 		// TODO turn on after fix of env
 
@@ -96,17 +105,26 @@ function SessionDetailPage(props) {
 	}
 
 	function cancelFallState() {
-		setShowFallState(false)
+		setShowFallState(false);
 	}
 
 	function openActiveState() {
-		setShowFallState(false)
-		setShowActiveState(true)
+		setShowFallState(false);
+		setShowActiveState(true);
 	}
 
-	if (showActiveState) return <ActiveState sendForHelp={sendEmail} finishSession={finishSession} />
+	if (showActiveState)
+		return (
+			<ActiveState sendForHelp={sendEmail} finishSession={finishSession} />
+		);
 
-	if (!showFallState) return <FallState cancelFallState={cancelFallState} openActiveState={openActiveState} />
+	if (!showFallState)
+		return (
+			<FallState
+				cancelFallState={cancelFallState}
+				openActiveState={openActiveState}
+			/>
+		);
 
 	return (
 		<div>
