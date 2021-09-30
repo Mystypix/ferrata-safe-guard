@@ -1,19 +1,23 @@
 export function startTracking(sessionId) {
 	if ('LinearAccelerationSensor' in window && 'Gyroscope' in window) {
+		console.log(1)
 		let lastReadingTimestamp
 		let accelerometer = new LinearAccelerationSensor()
 
 		accelerometer.addEventListener('reading', () => {
 			if (lastReadingTimestamp) {
+				console.log(11)
 				intervalHandler(Math.round(accelerometer.timestamp - lastReadingTimestamp))
 			}
 			lastReadingTimestamp = accelerometer.timestamp
+			console.log(2)
 			accelerationHandler(accelerometer, 'acceleration')
 		})
 		accelerometer.start()
 
 		if ('GravitySensor' in window) {
 			let gravity = new GravitySensor();
+			console.log(3)
 			gravity.addEventListener('reading', () => accelerationHandler(gravity, 'accelerationWithGravity'))
 			gravity.start()
 		}
@@ -32,6 +36,7 @@ export function startTracking(sessionId) {
 
 	// Handler
 	function accelerationHandler(acceleration, type) {
+		console.log(4)
 		const logKey = `${sessionId}_${type}`
 		const timestamp = Date.now()
 		const x = acceleration.x && acceleration.x.toFixed(3)
