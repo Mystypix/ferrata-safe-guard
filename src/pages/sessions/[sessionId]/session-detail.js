@@ -91,13 +91,22 @@ function SessionDetailPage(props) {
 		// 	});
 	}
 
+	function finishSession() {
+		// TODO
+	}
+
 	function cancelFallState() {
 		setShowFallState(false)
 	}
 
-	if (showActiveState) return <ActiveState sendForHelp={sendEmail} />
+	function openActiveState() {
+		setShowFallState(false)
+		setShowActiveState(true)
+	}
 
-	if (showFallState) return <FallState cancelFallState={cancelFallState} />
+	if (showActiveState) return <ActiveState sendForHelp={sendEmail} finishSession={finishSession} />
+
+	if (!showFallState) return <FallState cancelFallState={cancelFallState} openActiveState={openActiveState} />
 
 	return (
 		<div>

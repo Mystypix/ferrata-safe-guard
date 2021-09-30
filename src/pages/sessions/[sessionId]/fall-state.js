@@ -8,22 +8,22 @@ const formatDuration = duration => {
 	return Duration.fromMillis(duration * 1000).toFormat('mm:ss');
 };
 
-const TIMER = 20
+const COUNTDOWN_TIME = 20
 
 function FallState(props) {
-	const [timer, setTimer] = useState(TIMER)
+	const [time, setTime] = useState(COUNTDOWN_TIME)
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			if (timer === 0) {
-				props.callHelp()
+			setTime(time => time - 1);
+			if (time === 0) {
+				props.openActiveState()
 			}
-			setTimer(timer => timer - 1);
 		}, 1000);
 		return () => {
 			clearInterval(interval);
 		};
-	}, [setTimer]);
+	}, [time, setTime]);
 
 	function handleClick() {
 		props.cancelFallState()

@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import Link from 'next/link';
 import Router from 'next/router';
 import {useState, useEffect, useRef} from 'react';
+import Image from 'next/image'
 import usersApi from 'api/users';
 import css from './signup.module.scss';
 import Button from 'components/button';
@@ -32,6 +33,10 @@ function SignupPage() {
 		Router.push('/sessions');
 	};
 
+	function skipIntro() {
+		setStep(4)
+	}
+
 	if (creatingAccount) {
 		return <div className={css.creatingAccount}>Creating account...</div>;
 	}
@@ -55,26 +60,36 @@ function SignupPage() {
 					</div>
 				</div>
 				<div className={classnames(css.formStep, {[css.active]: step === 2})}>
-					step 2
+					<Image src='/icons/intro-step-2.svg' width='312' height='180' />
+					Fill the name of project and its location
+					Tip: Project name might be name of the route.
+					Tip 2: The more precise location, the better.
 				</div>
 				<div className={classnames(css.formStep, {[css.active]: step === 3})}>
-					step 3
+					<Image src='/icons/intro-step-3.svg' width='312' height='180' />
+					Start climbing your project!
+					Tip: Dont forget to turn off the session at the end :)
 				</div>
 				<div className={classnames(css.formStep, {[css.active]: step === 4})}>
-					step 4
+					<Image src='/icons/intro-step-4.svg' width='312' height='180' />
+					Emergency call
+					App will recognize the fall and will contact rescue service to help
 				</div>
 
-				<div className={css.actionButton}>
-					{step < 1 ? (
+				{step < 4 ? (
+					<div className={css.actionButtons}>
+						{step > 1 && <div onClick={() => skipIntro()}>Skip intro</div>}
 						<Button type="action" size="large">
 							Next
 						</Button>
-					) : (
+					</div>
+				) : (
+					<div className={css.finishButtonWrapper}>
 						<Button type="action" size="large">
 							Create Account
 						</Button>
-					)}
-				</div>
+					</div>
+				)}
 			</form>
 
 			{false && (

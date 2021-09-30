@@ -14,9 +14,6 @@ function ActiveState(props) {
 	useEffect(() => {
 		props.sendForHelp()
 		const interval = setInterval(() => {
-			if (time === 0) {
-				props.callHelp()
-			}
 			setTime(time => time + 1);
 		}, 1000);
 		return () => {
