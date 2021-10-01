@@ -4,10 +4,10 @@ import Button from 'components/button'
 
 function ActiveState(props) {
 
-	useEffect(() => {
-		console.log('lkdsfhjkjsdf')
-		props.sendForHelp()
-	}, []);
+	// useEffect(() => {
+	// 	console.log('lkdsfhjkjsdf')
+	// 	props.sendForHelp()
+	// }, []);
 
 	function handleFinish() {
 		props.finishSession()
