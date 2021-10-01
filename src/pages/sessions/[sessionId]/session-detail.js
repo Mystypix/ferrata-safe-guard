@@ -95,7 +95,7 @@ function SessionDetailPage(props) {
 			username: accountSession.currentUser.username,
 			projectname: session.name,
 			location: session.location,
-			geolocation: 'lat' + geolocation.coords.latitude + ' ' + 'lon' + geolocation.coords.longitude,
+			geolocation: 'TBD',
 		};
 
 		emailjs.send(process.env.NEXT_PUBLIC_SERVICE_ID, process.env.NEXT_PUBLIC_TEMPLATE_ID, emailData, process.env.NEXT_PUBLIC_USER_ID)
