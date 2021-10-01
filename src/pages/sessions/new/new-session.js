@@ -15,7 +15,7 @@ function NewSessionPage() {
 	const formRef = useRef();
 	const accountSession = useContext(SessionContext);
 
-	const handleCreateSession = async ev => {
+	const handleCreateSession = async (ev, type = 'save-and-start') => {
 		ev.preventDefault();
 		const form = formRef.current;
 		if (!form) return;
@@ -31,7 +31,9 @@ function NewSessionPage() {
 			}
 		);
 
-		Router.push('/sessions/' + climbingSession.id);
+		Router.push(
+			type === 'save-only' ? 'sessions' : '/sessions/' + climbingSession.id
+		);
 	};
 
 	if (loading) {
@@ -60,7 +62,13 @@ function NewSessionPage() {
 				<Textarea id="description" name="description" />
 			</div>
 			<div className={css.actions}>
-				<Button type="default" size="large">
+				<Button
+					type="default"
+					size="large"
+					onClick={ev => {
+						handleCreateSession(ev, 'save-only');
+					}}
+				>
 					Save
 				</Button>
 				<Button type="action" size="large">
