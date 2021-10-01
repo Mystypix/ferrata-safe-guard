@@ -31,7 +31,7 @@ function SessionDetailPage(props) {
 	const accountSession = useContext(SessionContext);
 
 	const addData = item => {
-		setData(data => [...data, item].slice(-100));
+		setData(data => [...data, item].slice(-10000));
 	};
 
 	useEffect(async () => {
