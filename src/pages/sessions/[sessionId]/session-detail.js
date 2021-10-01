@@ -98,11 +98,9 @@ function SessionDetailPage(props) {
 			geolocation: geolocation, // TODO add correct data
 		};
 
-		// TODO turn on after fix of env
-
 		emailjs.send(process.env.NEXT_PUBLIC_SERVICE_ID, process.env.NEXT_PUBLIC_TEMPLATE_ID, emailData, process.env.NEXT_PUBLIC_USER_ID)
 			.then((result) => {
-				alert("Message Sent, We will get back to you shortly", result.text);
+				console.log('yep', result)
 			},
 			(error) => {
 				alert("An error occurred, Please try again", error.text);
@@ -137,7 +135,6 @@ function SessionDetailPage(props) {
 
 	return (
 		<div>
-			<div onClick={() => sendEmail()}>prdel</div>
 			<h1>Active for {formatDuration(time)}</h1>
 			<div className={css.chart}>
 				<VictoryChart
