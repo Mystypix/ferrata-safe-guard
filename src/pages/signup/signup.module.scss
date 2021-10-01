@@ -1,12 +1,13 @@
 .formStep {
 	min-height: 160px;
 	display: none;
+	text-align: center;
 }
 .formStep.active {
 	display: block;
 }
 .signupForm {
-	margin-top: 30px;
+	margin-top: 24px;
 }
 .formGroup + .formGroup {
 	margin-top: 20px;
@@ -34,4 +35,27 @@
 	text-align: center;
 	margin-top: 50px;
 	font-size: 18px;
+}
+
+.actionButtons {
+	flex: 1 1 auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 36px;
+
+	&.single {
+		justify-content: center;
+	}
+}
+
+.skipInto {
+	color: #DB780B;
+}
+
+.finishButtonWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 36px;
 }

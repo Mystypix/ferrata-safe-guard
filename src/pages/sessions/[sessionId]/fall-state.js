@@ -37,7 +37,7 @@ function FallState(props) {
 			</h1>
 			<Image className='illustration' src='/icons/accident.svg' width='312' height='244' />
 			<h1 className='fallHeader'>Fall detected</h1>
-			<Button className={classnames(BUTTON_TYPE.action)} onClick={() => handleClick}>Everything is fine</Button>
+			<Button size='large' onClick={() => handleClick}>Everything is fine</Button>
 		</div>
 	);
 }

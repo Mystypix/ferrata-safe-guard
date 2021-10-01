@@ -57,7 +57,7 @@ function LoginPage() {
 				</div>
 			</form>
 			<div className={css.newAccount}>
-				Do have an account? <Link href="/signup">Create one now.</Link>.
+				Do have an account? <Link href="/signup">Create one now</Link>
 			</div>
 		</div>
 	);

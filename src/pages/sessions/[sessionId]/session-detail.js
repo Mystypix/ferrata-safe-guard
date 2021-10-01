@@ -10,6 +10,8 @@ import SessionContext from 'components/session-context';
 import FallState from './fall-state';
 import ActiveState from './active-state';
 import Router from 'next/router';
+import Button, {BUTTON_TYPE} from 'components/button'
+import classnames from 'classnames';
 
 const formatTimestamp = ms => {
 	return Math.round(ms / 1000);
@@ -135,7 +137,7 @@ function SessionDetailPage(props) {
 
 	return (
 		<div>
-			<h1>{formatDuration(time)}</h1>
+			<h1>Active for {formatDuration(time)}</h1>
 			<div className={css.chart}>
 				<VictoryChart
 					width={312}
@@ -150,11 +152,11 @@ function SessionDetailPage(props) {
 						// tickFormat={['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4']}
 						tickFormat={x => `${formatTimestamp(x - firstTimestamp)}s`}
 					/>
-					<VictoryAxis
+					{/* <VictoryAxis
 						dependentAxis
 						// tickFormat specifies how ticks should be displayed
 						// tickFormat={x => `$${x - firstTimestamp}`}
-					/>
+					/> */}
 					<VictoryArea
 						data={displayData}
 						style={{ data: { fill: "#FFE1C0", stroke: '#FF8A00'} }}
@@ -165,10 +167,9 @@ function SessionDetailPage(props) {
 					/>
 				</VictoryChart>
 			</div>
-			<h1>Active...</h1>
-			<div>
+			<div className={css.buttonWrapper}>
 				{/* <button ref={callHelpButton}>Call the help</button> */}
-				<button onClick={() => finishSession()}>Finish</button>
+				<Button type='action' size='large' onClick={() => finishSession()}>Finish</Button>
 			</div>
 		</div>
 	);

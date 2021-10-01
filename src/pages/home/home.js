@@ -35,9 +35,11 @@ function HomePage() {
 
 	return (
 		<div className={css.homePage}>
-			<Image src="/icons/fall.svg" width="312" height="244" />
-			<Image src="/icons/ferrata.svg" width="44" height="44" />
-			<h2>Ferrata safe guard</h2>
+			<div className='homeVisual'>
+				<Image src="/icons/fall.svg" width="312" height="244" />
+			</div>
+			<Image src="/icons/logo.svg" width="48" height="64" />
+			<h1>Ferrata safe guard</h1>
 			<p className={css.text}>
 				a distinct section of a piece of writing, usually dealing with a single
 				theme and indicated by a new line, indentation, or numbering.

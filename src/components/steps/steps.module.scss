@@ -15,11 +15,11 @@
 	width: 14px;
 	height: 14px;
 	border-radius: 50%;
-	background: grey;
+	background: #DDE1E6;
 }
 .active .inner {
-	background: green;
+	background: #FF8A00;
 }
 .step:not(.active):hover .inner {
-	background: rgb(0, 175, 0);
+	background: #FF8A00;
 }

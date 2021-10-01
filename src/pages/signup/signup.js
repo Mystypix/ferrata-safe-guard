@@ -44,9 +44,11 @@ function SignupPage() {
 		return <div className={css.creatingAccount}>Creating account...</div>;
 	}
 
+	const isAcc = step === 1 || step === 2
+
 	return (
 		<div className={css.signUp}>
-			<h2>Create account</h2>
+			<h1>{isAcc ? 'Create account' : 'Introduction'} </h1>
 			<form
 				className={css.signupForm}
 				onSubmit={handleFormSubmit}
@@ -75,23 +77,36 @@ function SignupPage() {
 
 				<div className={classnames(css.formStep, {[css.active]: step === 3})}>
 					<Image src="/icons/intro-step-2.svg" width="312" height="180" />
-					Fill the name of project and its location Tip: Project name might be
-					name of the route. Tip 2: The more precise location, the better.
+					<p>
+						Fill the name of project and its location
+					</p>
+					<p>Tip: Project name might be
+						name of the route.
+					</p>
+					<p>
+						Tip 2: The more precise location, the better.
+					</p>
 				</div>
 				<div className={classnames(css.formStep, {[css.active]: step === 4})}>
 					<Image src="/icons/intro-step-3.svg" width="312" height="180" />
-					Start climbing your project! Tip: Dont forget to turn off the session
-					at the end :)
+					<p>
+						Start climbing your project!
+					</p>
+					<p>Tip: Dont forget to turn off the session
+						at the end :)
+					</p>
 				</div>
 				<div className={classnames(css.formStep, {[css.active]: step === 5})}>
 					<Image src="/icons/intro-step-4.svg" width="312" height="180" />
-					Emergency call App will recognize the fall and will contact rescue
-					service to help
+					<p>
+						Emergency call App will recognize the fall and will contact rescue
+						service to help
+					</p>
 				</div>
 
 				{step < 5 ? (
-					<div className={css.actionButtons}>
-						{step > 2 && <div onClick={() => skipIntro()}>Skip intro</div>}
+					<div className={classnames(css.actionButtons, {[css.single]: step === 1 || step === 2})}>
+						{step > 2 && <div className={css.skipInto} onClick={() => skipIntro()}>Skip intro</div>}
 						<Button type="action" size="large">
 							Next
 						</Button>
