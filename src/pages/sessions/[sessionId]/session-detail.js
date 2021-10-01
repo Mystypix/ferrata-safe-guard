@@ -100,13 +100,13 @@ function SessionDetailPage(props) {
 
 		// TODO turn on after fix of env
 
-		// emailjs.send(process.env.SERVICE_ID, process.env.TEMPLATE_ID, emailData, process.env.USER_ID)
-		// 	.then((result) => {
-		// 		alert("Message Sent, We will get back to you shortly", result.text);
-		// 	},
-		// 	(error) => {
-		// 		alert("An error occurred, Please try again", error.text);
-		// 	});
+		emailjs.send(process.env.SERVICE_ID, process.env.TEMPLATE_ID, emailData, process.env.USER_ID)
+			.then((result) => {
+				alert("Message Sent, We will get back to you shortly", result.text);
+			},
+			(error) => {
+				alert("An error occurred, Please try again", error.text);
+			});
 	}
 
 	function finishSession() {
@@ -137,6 +137,7 @@ function SessionDetailPage(props) {
 
 	return (
 		<div>
+			<div onClick={() => sendEmail()}>prdel</div>
 			<h1>Active for {formatDuration(time)}</h1>
 			<div className={css.chart}>
 				<VictoryChart
