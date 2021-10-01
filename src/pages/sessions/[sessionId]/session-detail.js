@@ -100,7 +100,7 @@ function SessionDetailPage(props) {
 
 		// TODO turn on after fix of env
 
-		emailjs.send(process.env.SERVICE_ID, process.env.TEMPLATE_ID, emailData, process.env.USER_ID)
+		emailjs.send(process.env.NEXT_PUBLIC_SERVICE_ID, process.env.NEXT_PUBLIC_TEMPLATE_ID, emailData, process.env.NEXT_PUBLIC_USER_ID)
 			.then((result) => {
 				alert("Message Sent, We will get back to you shortly", result.text);
 			},
