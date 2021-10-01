@@ -118,7 +118,7 @@ function SessionDetailPage(props) {
 			<ActiveState sendForHelp={sendEmail} finishSession={finishSession} />
 		);
 
-	if (!showFallState)
+	if (showFallState)
 		return (
 			<FallState
 				cancelFallState={cancelFallState}
@@ -143,11 +143,11 @@ function SessionDetailPage(props) {
 						// tickFormat={['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4']}
 						tickFormat={x => `${formatTimestamp(x - firstTimestamp)}s`}
 					/>
-					{/* <VictoryAxis
+					<VictoryAxis
 						dependentAxis
 						// tickFormat specifies how ticks should be displayed
 						// tickFormat={x => `$${x - firstTimestamp}`}
-					/> */}
+					/>
 					<VictoryBar
 						data={displayData}
 						// data accessor for x values
