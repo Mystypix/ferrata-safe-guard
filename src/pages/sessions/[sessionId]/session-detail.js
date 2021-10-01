@@ -40,7 +40,7 @@ function SessionDetailPage(props) {
 		if (value >= 50) {
 			setTimeout(() => {
 				setShowFallState(true)
-			}, 20000)
+			}, 10000)
 		}
 		setData(data => [...data, item].slice(-10000));
 	};

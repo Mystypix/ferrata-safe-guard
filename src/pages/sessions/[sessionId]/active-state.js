@@ -1,14 +1,13 @@
-import classnames from 'classnames'
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import Image from 'next/image'
-import Button, {BUTTON_TYPE} from 'components/button'
-import {Duration} from 'luxon';
+import Button from 'components/button'
 
 function ActiveState(props) {
 
 	useEffect(() => {
+		console.log('lkdsfhjkjsdf')
 		props.sendForHelp()
-	});
+	}, []);
 
 	function handleFinish() {
 		props.finishSession()
