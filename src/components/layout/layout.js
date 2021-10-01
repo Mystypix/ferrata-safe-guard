@@ -1,7 +1,7 @@
 import css from './layout.module.scss';
 import Link from 'next/link';
 import Image from 'next/image';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import SessionContext from 'components/session-context';
 
 const getInitials = currentUser => {
@@ -18,7 +18,13 @@ if (global.localStorage) {
 }
 
 export default function Layout({children, goBack, goBackTitle}) {
-	const [currentUser, setCurrentUser] = useState(currentSession);
+	const [currentUser, setCurrentUser] = useState(() => {
+		if (global.localStorage) {
+			let currentSession = localStorage.getItem('session');
+			return currentSession ? JSON.parse(currentSession) : null;
+		}
+		return null;
+	});
 	const setAndPersistCurrentUser = currentUser => {
 		setCurrentUser(currentUser);
 		localStorage.setItem(
@@ -26,6 +32,9 @@ export default function Layout({children, goBack, goBackTitle}) {
 			currentUser === null ? null : JSON.stringify(currentUser)
 		);
 	};
+	useEffect(() => {
+		console.log('first render');
+	}, []);
 	return (
 		<>
 			<SessionContext.Provider
