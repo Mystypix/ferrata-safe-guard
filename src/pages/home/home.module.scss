@@ -23,5 +23,10 @@
 	margin-top: 50px;
 	display: flex;
 	align-items: center;
-	flex-flow: column nowrap;
+	justify-content: center;
+	flex-flow: row nowrap;
+}
+
+.actions > * + * {
+	margin-left: 10px;
 }
