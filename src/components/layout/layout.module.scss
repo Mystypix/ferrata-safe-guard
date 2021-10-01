@@ -51,6 +51,7 @@
 }
 
 .main {
+	min-height: 100vh;
 	padding: 24px;
 	padding-top: 74px;
 	position: relative;
@@ -59,4 +60,5 @@
 
 .main .inner {
 	position: relative;
+	min-height: calc(100vh - 98px);
 }

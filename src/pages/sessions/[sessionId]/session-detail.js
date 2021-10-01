@@ -128,31 +128,12 @@ function SessionDetailPage(props) {
 
 	return (
 		<div>
-			<div>
-				<strong>{session.name}</strong>
-			</div>
-			<div>Location: {session.location}</div>
-			<div>
-				{!inProgress && (
-					<div>
-						<div>{formatDuration(time)}</div>
-						<button onClick={() => setInProgress(true)}>Start Climbing</button>
-					</div>
-				)}
-				{inProgress && (
-					<div>
-						<div>{formatDuration(time)}</div>
-						<button onClick={() => setInProgress(false)}>Stop Climbing</button>
-						{/* <button ref={callHelpButton}>Call the help</button> */}
-					</div>
-				)}
-			</div>
+			<h1>{formatDuration(time)}</h1>
 			<div className={css.chart}>
-				{displayData.length}
 				<VictoryChart
-					width={600}
-					height={400}
-					domainPadding={20}
+					width={312}
+					height={244}
+					domainPadding={12}
 					theme={VictoryTheme.material}
 				>
 					<VictoryAxis
@@ -162,11 +143,11 @@ function SessionDetailPage(props) {
 						// tickFormat={['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4']}
 						tickFormat={x => `${formatTimestamp(x - firstTimestamp)}s`}
 					/>
-					<VictoryAxis
+					{/* <VictoryAxis
 						dependentAxis
 						// tickFormat specifies how ticks should be displayed
 						// tickFormat={x => `$${x - firstTimestamp}`}
-					/>
+					/> */}
 					<VictoryBar
 						data={displayData}
 						// data accessor for x values
@@ -175,6 +156,11 @@ function SessionDetailPage(props) {
 						y="distance"
 					/>
 				</VictoryChart>
+			</div>
+			<h1>Active...</h1>
+			<div>
+				{/* <button ref={callHelpButton}>Call the help</button> */}
+				<button onClick={() => finishSession()}>Finish</button>
 			</div>
 		</div>
 	);

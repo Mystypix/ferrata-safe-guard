@@ -20,3 +20,35 @@ a {
 	color: #ED7200;
 	text-decoration: none;
 }
+
+h1 {
+	margin-bottom: 12px;
+	color: #1F252E;
+	font-size: 28px;
+	line-height: 40px;
+	text-align: center;
+	font-weight: 700;
+}
+
+.pageWrapper {
+	text-align: center;
+}
+
+.illustration {
+	display: block;
+	margin: 0 auto 12px;
+}
+
+.fallTimeWrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.fallHeader {
+	color: #DA1E28
+}
+
+.fallTime {
+	margin-left: 6px;
+}

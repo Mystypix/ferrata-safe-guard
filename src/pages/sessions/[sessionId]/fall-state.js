@@ -30,16 +30,14 @@ function FallState(props) {
 	}
 
 	return (
-		<div>
-			<Image src="/icons/accident.svg" width="312" height="244" />
-			<div>Fall detected</div>
-			<div>Sending for help in {formatDuration(time)}</div>
-			<Button
-				className={classnames(BUTTON_TYPE.action)}
-				onClick={() => handleClick}
-			>
-				Everything is fine
-			</Button>
+		<div className='pageWrapper'>
+			<h1 className='fallTimeWrapper'>
+				<Image className='warningIcon' src='/icons/warning.svg' width='28' height='28' />
+				<div className='fallTime'>{formatDuration(time)}</div>
+			</h1>
+			<Image className='illustration' src='/icons/accident.svg' width='312' height='244' />
+			<h1 className='fallHeader'>Fall detected</h1>
+			<Button className={classnames(BUTTON_TYPE.action)} onClick={() => handleClick}>Everything is fine</Button>
 		</div>
 	);
 }
