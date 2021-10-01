@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import {useState, useContext, useEffect, useRef} from 'react';
+import {useState, useContext, useEffect} from 'react';
 import climbingSessionsApi from 'api/climbing-sessions';
 import css from './session-detail.module.scss';
 import {Duration} from 'luxon';
@@ -99,7 +99,7 @@ function SessionDetailPage(props) {
 	}
 
 	function finishSession() {
-		// TODO
+		Router.push('/sessions');
 	}
 
 	function cancelFallState() {
