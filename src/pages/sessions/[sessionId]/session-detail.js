@@ -31,7 +31,11 @@ function SessionDetailPage(props) {
 	const accountSession = useContext(SessionContext);
 
 	const addData = item => {
-		if (item >= 50) {
+		const value = Math.sqrt(
+			Math.pow(item.x, 2) + Math.pow(item.y, 2) + Math.pow(item.z, 2)
+		)
+
+		if (value >= 50) {
 			setTimeout(() => {
 				setShowFallState(true)
 			}, 20000)
@@ -146,11 +150,11 @@ function SessionDetailPage(props) {
 						// tickFormat={['Quarter 1', 'Quarter 2', 'Quarter 3', 'Quarter 4']}
 						tickFormat={x => `${formatTimestamp(x - firstTimestamp)}s`}
 					/>
-					{/* <VictoryAxis
+					<VictoryAxis
 						dependentAxis
 						// tickFormat specifies how ticks should be displayed
 						// tickFormat={x => `$${x - firstTimestamp}`}
-					/> */}
+					/>
 					<VictoryArea
 						data={displayData}
 						style={{ data: { fill: "#FFE1C0", stroke: '#FF8A00'} }}
