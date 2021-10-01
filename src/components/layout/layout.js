@@ -42,7 +42,7 @@ export default function Layout({children, goBack, goBackTitle}) {
 							</Link>
 						)}
 						{!goBack && (
-							<Link href="/" passHref>
+							<Link href={currentUser ? '/sessions' : '/'} passHref>
 								<a className={css.headerName}>
 									<Image src="/icons/ferrata.svg" width="32" height="32" />
 									<div className={css.headerTitle}>Ferrata Safe Guard</div>
