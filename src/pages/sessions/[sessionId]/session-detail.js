@@ -4,7 +4,7 @@ import climbingSessionsApi from 'api/climbing-sessions';
 import css from './session-detail.module.scss';
 import {Duration} from 'luxon';
 import {getGeolocation, startTracking} from '../../../utils/utils';
-import {VictoryAxis, VictoryChart, VictoryBar, VictoryTheme} from 'victory';
+import {VictoryAxis, VictoryChart, VictoryArea, VictoryTheme} from 'victory';
 import emailjs from 'emailjs-com';
 import SessionContext from 'components/session-context';
 import FallState from './fall-state';
@@ -23,7 +23,6 @@ function SessionDetailPage(props) {
 	const [loading, setLoading] = useState(true);
 	const [session, setSession] = useState(null);
 	const [geolocation, setGeolocation] = useState(null);
-	const [inProgress, setInProgress] = useState(false);
 	const [time, setTime] = useState(0);
 	const [data, setData] = useState([]);
 	const [showActiveState, setShowActiveState] = useState(false);
@@ -52,7 +51,6 @@ function SessionDetailPage(props) {
 	}, [props.sessionId]);
 
 	useEffect(() => {
-		if (!inProgress) return;
 		const interval = setInterval(() => {
 			setTime(time => time + 1);
 		}, 1000);
@@ -61,7 +59,7 @@ function SessionDetailPage(props) {
 			stopTracking();
 			clearInterval(interval);
 		};
-	}, [inProgress, setTime]);
+	}, [setTime]);
 
 	if (loading) {
 		return <div>Loading...</div>;
@@ -148,7 +146,7 @@ function SessionDetailPage(props) {
 						// tickFormat specifies how ticks should be displayed
 						// tickFormat={x => `$${x - firstTimestamp}`}
 					/>
-					<VictoryBar
+					<VictoryArea
 						data={displayData}
 						// data accessor for x values
 						x="timestamp"
